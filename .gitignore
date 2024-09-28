@@ -1,0 +1,6 @@
+*.log
+
+ansible_env/*
+linode/*
+
+.vault-pass

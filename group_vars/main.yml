@@ -1,0 +1,23 @@
+---
+# group_vars/main.yml
+
+dev_user: "deploy"
+timezone: "Australia/Melbourne"
+linode_image: linode/ubuntu22.04
+linode_label: ansible-dev
+linode_region: ap-southeast
+inventory_file: ~/.ansible/hosts
+
+# the file into which the automatically greate ssh key values get copied
+ssh_key_name: linode_ed25519
+ssh_key_dir: ~/.ssh 
+
+# Group_name used as a grouping for any linodes created
+group_name: linodes
+
+# Admin group to which a user will be added
+admin_group: admin
+
+users:
+- ubuntu
+

@@ -1,0 +1,25 @@
+---
+# roles/devtools/tasks
+
+- name: Install build-essential and other development tools
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - cmake
+      - python3-dev
+      - python3-pip
+      - libssl-dev
+      - libffi-dev
+    state: present
+
+- name: Install Docker
+  ansible.builtin.apt:
+    name: docker.io
+    state: present
+
+- name: Add users to the docker group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: "docker"
+    append: true  # Ensures the user is added to the group without removing existing groups
+  with_items: "{{ users }}"

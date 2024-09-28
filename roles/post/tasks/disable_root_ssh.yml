@@ -1,0 +1,13 @@
+# ---
+# # roles/post/tasks/disable_root_ssh.yml
+
+- name: Secure ssh configs
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^\#?PermitRootLogin (yes|no|without-password)', line: 'PermitRootLogin no' }
+    - { regexp: '^\#?PasswordAuthentication (yes|no)', line: 'PasswordAuthentication no' }
+    - { regexp: '^\#?PubkeyAuthentication (yes|no)', line: 'PubkeyAuthentication yes' }
+  notify: restart ssh
