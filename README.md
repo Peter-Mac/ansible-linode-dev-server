@@ -1,4 +1,4 @@
-# # Ansible Dev Server Setup
+# Ansible Dev Server Setup
 
 This project helps set up a single devleopment server on Linode.
 ## Background
@@ -12,14 +12,14 @@ The setup consists of three parts
 - Configuring the server (setup.yml)
 There is a bit of manual tweaking involved (for the moment) which is creating a pub/private key, and copying the public key to the server for continued access after the initial provisioning step.
 
-Pre-requisites are:
+**Pre-requisites are:**
 - An active Linode account
 - An API Personal Token (issued by Linode - requested/managed by account holder)
 - The use of an ansible valut to store:
   - The Linode API Personal Token value
   - A root pasword to be used to access the server until the SSH key process is enabled
 
-# Results
+## Results
 The running of the 2 playbooks (and the config of the SSH keys) will  create a relativelsy secure Ubuntu based server with passwordless SSH access for a single user 'ubuntu'.
 The user's home folder has zsh installed and is ready for use with some typical dev tools. I didn't want this project to get too far into the details of installing and customising the kithen sink as everyone's needs are different. The intent here is to get the basic shell working. I'll customise the hell out of the install once the shell is up and running.
 
