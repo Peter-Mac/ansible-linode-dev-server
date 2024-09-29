@@ -1,4 +1,6 @@
 ---
+# Playbook
+# provision.yml
 # Provision servers using the linode v4 api
 - name: Deploy development server infrastructure
   hosts: localhost
@@ -40,7 +42,7 @@
         name: "{{ linode_instance.instance.label }}"
         groups: "{{ group_name }}"
         ansible_host: "{{ server_ip }}"
-        ansible_user: root
+        ansible_user: "{{ setup_user }}"
         ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
       when: linode_instance.instance.changed is defined
       changed_when: true

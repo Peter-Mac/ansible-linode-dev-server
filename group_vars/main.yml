@@ -1,11 +1,20 @@
 ---
 # group_vars/main.yml
 
-dev_user: "deploy"
+# Timezone could/should be left at UTC especially if running any database
+# systems. In my case, this would only happen via docker conatiners where
+# I can set the timezone specifically. Here's a good enough approach.
 timezone: "Australia/Melbourne"
+
+# the version of ubuntu to be installed.
 linode_image: linode/ubuntu22.04
+
+# My label for this service as it will appear in my Linode console.
+# If I was to add multi-server support, this would be [label]-01, -02 etc.
 linode_label: ansible-dev
+
 linode_region: ap-southeast
+
 inventory_file: ~/.ansible/hosts
 
 # the file into which the automatically greate ssh key values get copied
@@ -15,9 +24,13 @@ ssh_key_dir: ~/.ssh
 # Group_name used as a grouping for any linodes created
 group_name: linodes
 
+# The user to be used when setting up the initial system config.
+# An additional user is created for standar operation requirements
+# and the root user has SSH access disabled once everything is complete
+setup_user: root
+
 # Admin group to which a user will be added
 admin_group: admin
 
 users:
 - ubuntu
-

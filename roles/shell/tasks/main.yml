@@ -1,0 +1,16 @@
+---
+# roles/shell/tasks/main.yml
+
+- name: Ensure Zsh with dependencies are installed
+  ansible.builtin.apt:
+    name: zsh
+    state: present
+    update_cache: true
+  become: true
+
+- name: Ensure zsh is the default shell
+  ansible.builtin.user:
+    name: "{{ item }}"
+    shell: "/usr/bin/zsh"
+  become: true
+  with_items: "{{ users }}"

@@ -1,3 +1,10 @@
+.DS_Store
+.vscode
+tmp/
+backup/
+.env
+.venv
+
 *.log
 
 ansible_env/*

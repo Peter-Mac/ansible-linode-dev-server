@@ -3,8 +3,10 @@
   hosts: all
   any_errors_fatal: true
   user: root
+
   vars:
     local_home: "{{ lookup('env','HOME') }}"
+
   vars_files:
     - ./group_vars/main.yml
     - ./group_vars/secrets.yml
@@ -12,3 +14,4 @@
   roles:
     - role: common
     - role: devtools
+    - role: shell
