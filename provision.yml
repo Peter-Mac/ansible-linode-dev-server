@@ -23,7 +23,7 @@
         image: "{{ linode_image }}"
         private_ip: false
         authorized_keys:
-          - "{{ ssh_key_dir }}/{{ ssh_key_name }}.pub}}"  # this installs the pub key on remote server
+          - "{{ ssh_key_dir }}/{{ ssh_key_name }}.pub"  # this installs the pub key on remote server
         state: present
       register: linode_instance
 
@@ -62,15 +62,15 @@
               hosts:
                 "{{ linode_label }}":
                   ansible_host: "{{ server_ip }}"
-                  ansible_ssh_user: root
+                  ansible_ssh_user: "{{ setup_user }}"
                   ansible_private_key_file: "{{ ssh_key_dir }}/{{ ssh_key_name }}"
 
-    - name: Wait for SSH to come up
+    - name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
       ansible.builtin.wait_for:
         host: "{{ server_ip }}"
         port: 22
         search_regex: OpenSSH
-        delay: 10
+        delay: 20
       connection: local
       with_items:
         - "{{ linode_instance }}"
