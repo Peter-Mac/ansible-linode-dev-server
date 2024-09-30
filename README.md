@@ -18,6 +18,7 @@ There is a bit of manual tweaking involved (for the moment) which is creating a 
 - The use of an ansible valut to store:
   - The Linode API Personal Token value
   - A root pasword to be used to access the server until the SSH key process is enabled
+- working install of ansible (e.g. brew install ansible)
 
 ## Results
 The running of the 2 playbooks (and the config of the SSH keys) will  create a relativelsy secure Ubuntu based server with passwordless SSH access for a single user 'ubuntu'.
@@ -36,4 +37,8 @@ ssh-copy-id -i ~/.ssh/linode_ed25519.pub root@<my-ip-address>
 ```
  
 ## Further TODOs
-Enable a multi-server run. This run is configured for one server. Would need to add a loop for some processing on a multi server setup.
+- Enable a multi-server run. This run is configured for one server. Would need to add a loop for some processing on a multi server setup.
+
+- Add DNS setup so the server is allocated a proper name under my domain.
+
+- Post install reporting to remind me to us e a specific SSH identity file.
