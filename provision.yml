@@ -29,14 +29,14 @@
       register: linode_results
 
     - name: Set dynamic inventory file header
-      copy:
+      ansible.builtin.copy:
         dest: "{{ dynamic_inventory_file }}"
         content: |
           [linode_nodes]
       when: linode_results is defined
 
     - name: Add each Linode node to the dynamic inventory file
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ dynamic_inventory_file }}"
         line: |
           {{ item.instance.label }} ansible_host={{ item.instance.ipv4[0] }} ansible_user={{ setup_user }} ansible_private_key_file="{{ local_home }}/{{ ssh_key_dir }}/{{ ssh_key_name }}"
@@ -44,7 +44,7 @@
       when: linode_results is defined
 
     - name: Display generated dynamic inventory
-      debug:
+      ansible.builtin.debug:
         msg: |
           Inventory generated at: {{ dynamic_inventory_file }}
           ---

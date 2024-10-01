@@ -3,16 +3,16 @@
 
 - name: Set the hostname based on the server's label
   become: true
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
-  
+
 - name: Ensure the hostname is added to /etc/hosts
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/hosts
     line: "127.0.0.1 {{ inventory_hostname }}"
     state: present
-  
+
 - name: Set timezone appropriately
   become: true
   community.general.timezone:
