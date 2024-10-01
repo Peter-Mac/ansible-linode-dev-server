@@ -1,6 +1,23 @@
 ---
 # roles/common/tasks/main.yml
 
+- name: Set the hostname based on the server's label
+  become: true
+  hostname:
+    name: "{{ inventory_hostname }}"
+  
+- name: Ensure the hostname is added to /etc/hosts
+  become: true
+  lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1 {{ inventory_hostname }}"
+    state: present
+  
+- name: Set timezone appropriately
+  become: true
+  community.general.timezone:
+    name: "{{ timezone }}"
+
 - name: Apt update
   ansible.builtin.apt:
     update_cache: true
@@ -20,10 +37,8 @@
       - rsync
       - fail2ban
       - python3-pip
-      - python3-mysqldb
       - net-tools
       - apt-transport-https
-      - lua5.2
       - ufw
     state: present
 
@@ -34,7 +49,7 @@
     dest: /etc/fail2ban/jail.local
     remote_src: true
     mode: '0600'
-  notify: start fail2ban
+  notify: Start fail2ban
 
 - name: Secure ssh configs
   ansible.builtin.lineinfile:
@@ -45,7 +60,7 @@
     - { regexp: '^\#?PermitRootLogin (yes|no)', line: 'PermitRootLogin without-password' }
     - { regexp: '^\#?PasswordAuthentication (yes|no)', line: 'PasswordAuthentication no' }
     - { regexp: '^\#?PubkeyAuthentication (yes|no)', line: 'PubkeyAuthentication yes' }
-  notify: restart ssh
+  notify: Restart ssh
 
 - name: Apply ufw rules
   ansible.builtin.import_tasks: ufw.yml
