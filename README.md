@@ -7,10 +7,10 @@ The idea with this project is to create the ability at any time to go back to ba
 
 ## The Setup
 The setup consists of three parts
-- Provisioning the server (provision.yml)
-- Manual creation of ssh keys using ssh-keygen and copying to server using ssh-copy
-- Configuring the server (setup.yml)
-There is a bit of manual tweaking involved (for the moment) which is creating a pub/private key, and copying the public key to the server for continued access after the initial provisioning step.
+- Manual creation of ssh keys using ssh-keygen and configuring variables accordingly (ssk_key_name and ssh_key_dir). 
+- Provisioning the server(s) (provision.yml)
+- Configuring the server(s) (setup.yml)
+There is a bit of manual tweaking involved (for the moment) which is creating a pub/private key. I tried this with the builtin ansible tasks, but kept failing with an invalid key.
 
 **Pre-requisites are:**
 - An active Linode account
@@ -18,26 +18,40 @@ There is a bit of manual tweaking involved (for the moment) which is creating a 
 - The use of an ansible valut to store:
   - The Linode API Personal Token value
   - A root pasword to be used to access the server until the SSH key process is enabled
-- working install of ansible (e.g. brew install ansible)
+- working install of ansible (e.g. brew install ansible, or whatever works for your system)
 
 ## Results
-The running of the 2 playbooks (and the config of the SSH keys) will  create a relativelsy secure Ubuntu based server with passwordless SSH access for a single user 'ubuntu'.
+The running of the 2 playbooks (and the config of the SSH keys) will create a relativelsy secure Ubuntu based server with passwordless SSH access for a single user 'ubuntu'.
+If you want more than one server, simply add it as another node name under the linode_servers variable in the varibales file global_vars/main.yml
+
+```
+linode_servers:
+  - name: "ansible-dev-01"
+  - name: "ansible-dev-02"
+```
+
 The user's home folder has zsh installed and is ready for use with some typical dev tools. I didn't want this project to get too far into the details of installing and customising the kithen sink as everyone's needs are different. The intent here is to get the basic shell working. I'll customise the hell out of the install once the shell is up and running.
 
 My approach with the ssh key is to create a public/private key pair in my home ~/.ssh folder.
-Then use ssh-copy to copy the public part to the authorized_keys file on the server. This should be sufficient to get ssh up and running without passwords. A further step to perform for ssh hardening is to disable root access by applying changes to the ssh server config file ( /etc/sshd_config). This is performed as one of the final steps in the configure process.
+Then, once the ubuntu user has been created, access to the server needs you to specify the key as per:
+
+```
+
+ use ssh-copy to copy the public part to the authorized_keys file on the server. This should be sufficient to get ssh up and running without passwords. A further step to perform for ssh hardening is to disable root access by applying changes to the ssh server config file ( /etc/sshd_config). This is performed as one of the final steps in the configure process.
 
 ```
 ssh-keygen -t ed25519
 ...
 ...complete the key generation process...
-...
-...then...
-ssh-copy-id -i ~/.ssh/linode_ed25519.pub root@<my-ip-address>
 ```
- 
+Then update the group_vars/main.yml file with the path to whereever you placed the file.
+
+# don't add ~/ as this will be detected later using the env 'HOME' variable.
+ssh_key_dir:  .ssh
+# name of the private key
+sshk_key_name: ed25519 
+
 ## Further TODOs
-- Enable a multi-server run. This run is configured for one server. Would need to add a loop for some processing on a multi server setup.
 
 - Add DNS setup so the server is allocated a proper name under my domain.
 
