@@ -11,15 +11,26 @@ linode_image: linode/ubuntu22.04
 
 # My label for this service as it will appear in my Linode console.
 # If I was to add multi-server support, this would be [label]-01, -02 etc.
-linode_label: ansible-dev
+#linode_label: ansible-dev
 
 linode_region: ap-southeast
 
-inventory_file: ~/.ansible/hosts
+linode_servers:
+  - name: "ansible-dev-01"
+  - name: "ansible-dev-02"
+  
+# the target hosts file - updated with the actual ip address etc of the
+# provisioned server.
+dynamic_inventory_file: inventories/development/hosts-linode.yml
+
+local_home: "{{ lookup('env','HOME') }}"
 
 # the file into which the automatically greate ssh key values get copied
 ssh_key_name: linode_ed25519
-ssh_key_dir: ~/.ssh 
+
+# ssh home directory - but be sure to use {{ lookup('ansible.builtin.env', 'HOME') }}
+# when using this variable.
+ssh_key_dir: ".ssh" 
 
 # Group_name used as a grouping for any linodes created
 group_name: linodes
