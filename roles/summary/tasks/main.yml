@@ -1,0 +1,11 @@
+---
+# roles/summary/tasks/main.yml
+
+- name: Include server summary report tasks
+  ansible.builtin.debug:
+    msg: |
+      Server Creation Summary:
+      ------------------------
+      Remember to include the specific ssh identity file as follows:
+      ssh {{ item }}@{{ ansible_default_ipv4.address }} -i {{ ssh_key_dir }}/{{ ssh_key_name }}
+  with_items: "{{ users }}"
