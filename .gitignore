@@ -11,3 +11,6 @@ ansible_env/*
 linode/*
 
 .vault-pass
+
+# inventories file is generated programatically
+./inventories/development/hosts-linode.yml
