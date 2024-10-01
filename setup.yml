@@ -1,8 +1,9 @@
 # setup linodes after they've been provisioned
 - name: Configure linode instances
-  hosts: all
+  hosts: linode_nodes
   any_errors_fatal: true
-  user: root
+  gather_facts: true
+  user: "{{ setup_user }}"
 
   vars:
     local_home: "{{ lookup('env','HOME') }}"
@@ -15,3 +16,4 @@
     - role: common
     - role: devtools
     - role: shell
+    - role: summary
